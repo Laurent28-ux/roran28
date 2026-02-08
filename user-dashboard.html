@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rōran28 - Anime Streaming</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/user-dashboard.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container-fluid">
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="logo">
+                        <span class="logo-icon">🌸</span>
+                        <span class="logo-text">rōran<span class="logo-accent">28</span></span>
+                    </div>
+                    <nav class="main-nav">
+                        <a href="#" class="nav-item active">Home</a>
+                        <a href="#" class="nav-item">Series</a>
+                        <a href="#" class="nav-item">Movies</a>
+                        <a href="#" class="nav-item">New & Popular</a>
+                        <a href="#" class="nav-item">My List</a>
+                    </nav>
+                </div>
+                <div class="header-right">
+                    <button class="header-btn" onclick="openSearch()">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="header-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-dot"></span>
+                    </button>
+                    <div class="user-menu" onclick="toggleUserMenu()">
+                        <div class="user-avatar" id="headerAvatar">U</div>
+                        <i class="fas fa-caret-down"></i>
+                    </div>
+                    <div class="user-dropdown" id="userDropdown">
+                        <div class="dropdown-header">
+                            <div class="user-avatar-large" id="dropdownAvatar">U</div>
+                            <div class="user-info">
+                                <div class="user-name" id="userName">Utilisateur</div>
+                                <div class="user-email" id="userEmail">user@email.com</div>
+                            </div>
+                        </div>
+                        <div class="dropdown-links">
+                            <a href="#" class="dropdown-link">
+                                <i class="fas fa-user"></i> Account
+                            </a>
+                            <a href="#" class="dropdown-link">
+                                <i class="fas fa-cog"></i> Settings
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <button class="dropdown-link" onclick="logout()">
+                                <i class="fas fa-sign-out-alt"></i> Sign Out
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="hero-banner" id="heroBanner">
+        <div class="hero-slide active" id="heroSlide">
+            <img class="hero-bg" id="heroBg" src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=1920&h=1080&fit=crop" alt="Hero">
+            <div class="hero-gradient"></div>
+            <div class="container-fluid">
+                <div class="hero-content">
+                    <h1 class="hero-title" id="heroTitle">Découvrez les meilleurs animes</h1>
+                    <div class="hero-meta">
+                        <span class="meta-badge">HD</span>
+                        <span class="meta-item" id="heroYear">2024</span>
+                        <span class="meta-item" id="heroGenre">Anime</span>
+                        <span class="meta-rating">
+                            <i class="fas fa-star"></i>
+                            <span id="heroRating">9.2</span>
+                        </span>
+                    </div>
+                    <p class="hero-description" id="heroDescription">
+                        Plongez dans l'univers captivant de l'animation japonaise avec notre collection premium d'animes.
+                    </p>
+                    <div class="hero-actions">
+                        <button class="btn-hero btn-play" onclick="playHero()">
+                            <i class="fas fa-play"></i>
+                            <span>Play</span>
+                        </button>
+                        <button class="btn-hero btn-info" onclick="showInfo()">
+                            <i class="fas fa-info-circle"></i>
+                            <span>More Info</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container-fluid">
+            
+            <!-- Continue Watching -->
+            <section class="content-row" id="continueSection" style="display: none;">
+                <h2 class="row-title">Continue Watching</h2>
+                <div class="row-content">
+                    <div class="card-container" id="continueWatching">
+                        <!-- Generated by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Trending Now -->
+            <section class="content-row">
+                <h2 class="row-title">Trending Now</h2>
+                <div class="row-content">
+                    <div class="card-container" id="trendingNow">
+                        <!-- Generated by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Popular on Rōran28 -->
+            <section class="content-row">
+                <h2 class="row-title">Popular on Rōran28</h2>
+                <div class="row-content">
+                    <div class="card-container" id="popularAnimes">
+                        <!-- Generated by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- New Releases -->
+            <section class="content-row">
+                <h2 class="row-title">New Releases</h2>
+                <div class="row-content">
+                    <div class="card-container" id="newReleases">
+                        <!-- Generated by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- My List -->
+            <section class="content-row" id="myListSection" style="display: none;">
+                <h2 class="row-title">My List</h2>
+                <div class="row-content">
+                    <div class="card-container" id="myList">
+                        <!-- Generated by JS -->
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container-fluid">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="#">FAQ</a>
+                    <a href="#">Help Center</a>
+                    <a href="#">Terms of Use</a>
+                    <a href="#">Privacy</a>
+                    <a href="#">Cookie Preferences</a>
+                </div>
+                <p class="footer-copyright">© 2026 Rōran28. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Search Modal -->
+    <div class="search-modal" id="searchModal">
+        <div class="search-container">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search anime..." id="searchInput" autocomplete="off">
+                <button class="search-close" onclick="closeSearch()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/user-dashboard.js"></script>
+</body>
+</html>

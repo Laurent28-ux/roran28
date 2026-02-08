@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="theme-color" content="#f47521">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="description" content="Rōran28 - Votre plateforme de streaming d'animes en illimité. Découvrez des milliers d'animes en HD.">
+    <title>Rōran28 - Streaming d'Animes en Illimité</title>
+    
+    <!-- Preconnect pour optimiser le chargement -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://images.unsplash.com">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header class="header" id="main-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="logo">
+                        <h1>
+                            <span class="logo-icon">🌸</span>
+                            <span class="logo-text">Rōran<span class="logo-number">28</span></span>
+                        </h1>
+                    </div>
+                    <nav class="main-nav" aria-label="Navigation principale">
+                        <a href="#catalogue" class="nav-link">Catalogue</a>
+                        <a href="#nouveautes" class="nav-link">Nouveautés</a>
+                        <a href="#planning" class="nav-link">Planning</a>
+                    </nav>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-icon search-btn" aria-label="Rechercher" onclick="toggleSearch()">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="btn btn-secondary" onclick="showLoginModal()">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span class="btn-text">Connexion</span>
+                    </button>
+                    <button class="btn btn-primary" onclick="showSignupModal()">
+                        <i class="fas fa-user-plus"></i>
+                        <span class="btn-text">S'inscrire</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Barre de recherche cachée -->
+        <div class="search-bar-mobile" id="searchBarMobile">
+            <div class="container">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Rechercher un anime..." id="mobileSearchInput">
+                    <button class="close-search" onclick="toggleSearch()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="hero-carousel" aria-label="Animes en vedette">
+        <div class="carousel-container">
+            <div class="carousel-slides" id="carousel-slides" role="region" aria-live="polite">
+                <!-- Les slides seront générés par JavaScript -->
+            </div>
+            
+            <!-- Navigation -->
+            <button class="carousel-btn carousel-prev" onclick="prevSlide()" aria-label="Anime précédent">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="carousel-btn carousel-next" onclick="nextSlide()" aria-label="Anime suivant">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            
+            <!-- Indicateurs -->
+            <div class="carousel-indicators" id="carousel-indicators" role="tablist" aria-label="Sélection de l'anime"></div>
+        </div>
+    </section>
+
+    <!-- Section Tendances -->
+    <section class="trending-section" id="catalogue">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-fire"></i>
+                    Tendances du moment
+                </h2>
+                <a href="#" class="see-all-link" onclick="showLoginModal(); return false;">
+                    Voir tout <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            <div class="animes-carousel-wrapper">
+                <button class="carousel-scroll-btn prev" onclick="scrollCarousel('trending', -1)" aria-label="Précédent">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="animes-carousel" id="trending-carousel">
+                    <!-- Généré par JS -->
+                </div>
+                <button class="carousel-scroll-btn next" onclick="scrollCarousel('trending', 1)" aria-label="Suivant">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Nouveautés -->
+    <section class="animes-section" id="nouveautes">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-star"></i>
+                    Nouveaux épisodes
+                </h2>
+                <a href="#" class="see-all-link" onclick="showLoginModal(); return false;">
+                    Voir tout <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            <div class="animes-grid" id="animesGrid"></div>
+        </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-banner">
+                <div class="cta-content">
+                    <div class="cta-icon">
+                        <i class="fas fa-play-circle"></i>
+                    </div>
+                    <div class="cta-text">
+                        <h3>Prêt à commencer votre aventure ?</h3>
+                        <p>Rejoignez des millions de fans d'animes et accédez à notre catalogue complet gratuitement !</p>
+                    </div>
+                </div>
+                <button class="btn btn-cta" onclick="showSignupModal()">
+                    <i class="fas fa-rocket"></i>
+                    Créer un compte gratuit
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Planning -->
+    <section class="planning-preview-section" id="planning">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-calendar-alt"></i>
+                    Planning de la semaine
+                </h2>
+            </div>
+            <div class="planning-preview-grid" id="planningPreview">
+                <!-- Généré par JS -->
+            </div>
+            <div class="text-center" style="margin-top: 2rem;">
+                <button class="btn btn-secondary btn-large" onclick="showLoginModal()">
+                    <i class="fas fa-calendar-check"></i>
+                    Voir le planning complet
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2 class="section-title">Pourquoi choisir Rōran28 ?</h2>
+                <p class="section-subtitle">La meilleure expérience de streaming d'animes</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-infinity"></i>
+                    </div>
+                    <h3>Catalogue illimité</h3>
+                    <p>Accédez à des milliers d'animes en streaming HD, sans publicité intrusive</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Nouveautés instantanées</h3>
+                    <p>Les derniers épisodes disponibles dès leur sortie au Japon</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Multi-plateforme</h3>
+                    <p>Regardez vos animes préférés sur tous vos appareils</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3>Favoris & Suivi</h3>
+                    <p>Créez votre liste personnelle et suivez votre progression</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal Connexion -->
+    <div class="modal-overlay" id="loginModal" role="dialog" aria-labelledby="loginTitle" aria-modal="true">
+        <div class="modal" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal('loginModal')" aria-label="Fermer">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="loginTitle">Bon retour parmi nous !</h2>
+                    <p class="modal-subtitle">Connectez-vous pour continuer</p>
+                </div>
+                <form class="auth-form" id="loginForm" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="login-email">Adresse email</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-envelope input-icon"></i>
+                            <input type="email" id="login-email" required placeholder="votre@email.com" autocomplete="email">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Mot de passe</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="login-password" required placeholder="••••••••" autocomplete="current-password">
+                            <button type="button" class="toggle-password" onclick="togglePassword('login-password')" aria-label="Afficher le mot de passe">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="remember-me">
+                            <span>Se souvenir de moi</span>
+                        </label>
+                        <a href="#" class="forgot-password">Mot de passe oublié ?</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Se connecter
+                    </button>
+                </form>
+                <div class="modal-divider"><span>ou</span></div>
+                <div class="social-login">
+                    <button class="btn btn-social btn-google">
+                        <i class="fab fa-google"></i>
+                        Continuer avec Google
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <p>Pas encore de compte ? <a href="#" onclick="switchToSignup(); return false;">Inscrivez-vous gratuitement</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Inscription -->
+    <div class="modal-overlay" id="signupModal" role="dialog" aria-labelledby="signupTitle" aria-modal="true">
+        <div class="modal" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal('signupModal')" aria-label="Fermer">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="signupTitle">Rejoignez-nous !</h2>
+                    <p class="modal-subtitle">Créez votre compte en quelques secondes</p>
+                </div>
+                <form class="auth-form" id="signupForm" onsubmit="handleSignup(event)">
+                    <div class="form-group">
+                        <label for="signup-name">Nom complet</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-user input-icon"></i>
+                            <input type="text" id="signup-name" required placeholder="Votre nom" autocomplete="name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email">Adresse email</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-envelope input-icon"></i>
+                            <input type="email" id="signup-email" required placeholder="votre@email.com" autocomplete="email">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">Mot de passe</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="signup-password" required placeholder="••••••••" minlength="6" autocomplete="new-password">
+                            <button type="button" class="toggle-password" onclick="togglePassword('signup-password')" aria-label="Afficher le mot de passe">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <small class="form-hint">Minimum 6 caractères</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-confirm">Confirmer le mot de passe</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="signup-confirm" required placeholder="••••••••" minlength="6" autocomplete="new-password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="accept-terms" required>
+                            <span>J'accepte les <a href="#">conditions d'utilisation</a> et la <a href="#">politique de confidentialité</a></span>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-user-plus"></i>
+                        Créer mon compte
+                    </button>
+                </form>
+                <div class="modal-divider"><span>ou</span></div>
+                <div class="social-login">
+                    <button class="btn btn-social btn-google">
+                        <i class="fab fa-google"></i>
+                        S'inscrire avec Google
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <p>Déjà un compte ? <a href="#" onclick="switchToLogin(); return false;">Connectez-vous</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section footer-brand">
+                    <h3 class="footer-title">
+                        <span class="logo-icon">🌸</span>
+                        Rōran<span class="logo-number">28</span>
+                    </h3>
+                    <p class="footer-text">Votre plateforme de streaming d'animes préférée. Profitez de milliers d'animes en HD, où que vous soyez.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link" aria-label="Discord"><i class="fab fa-discord"></i></a>
+                        <a href="#" class="social-link" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-subtitle">Navigation</h4>
+                    <ul class="footer-links">
+                        <li><a href="#catalogue">Catalogue</a></li>
+                        <li><a href="#nouveautes">Nouveautés</a></li>
+                        <li><a href="#planning">Planning</a></li>
+                        <li><a href="#" onclick="showSignupModal(); return false;">S'inscrire</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-subtitle">À propos</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Qui sommes-nous</a></li>
+                        <li><a href="#">Nous contacter</a></li>
+                        <li><a href="#">Carrières</a></li>
+                        <li><a href="#">Presse</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-subtitle">Légal</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">CGU</a></li>
+                        <li><a href="#">Confidentialité</a></li>
+                        <li><a href="#">Mentions légales</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Rōran28. Tous droits réservés.</p>
+                <div class="footer-language">
+                    <button class="language-selector">
+                        <i class="fas fa-globe"></i>
+                        Français
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/auth.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>

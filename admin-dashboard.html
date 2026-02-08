@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Rōran28</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin-dashboard.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <span class="logo-icon">🌸</span>
+                <span class="logo-text">Rōran<span class="logo-number">28</span></span>
+            </div>
+            <div class="admin-badge">
+                <i class="fas fa-shield-alt"></i>
+                ADMIN
+            </div>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="#dashboard" class="nav-item active" onclick="showSection('dashboard'); return false;">
+                <i class="fas fa-th-large"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#animes" class="nav-item" onclick="showSection('animes'); return false;">
+                <i class="fas fa-film"></i>
+                <span>Animes</span>
+            </a>
+            <a href="#users" class="nav-item" onclick="showSection('users'); return false;">
+                <i class="fas fa-users"></i>
+                <span>Utilisateurs</span>
+            </a>
+            <a href="#stats" class="nav-item" onclick="showSection('stats'); return false;">
+                <i class="fas fa-chart-line"></i>
+                <span>Statistiques</span>
+            </a>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <div class="admin-user-info">
+                <div class="admin-avatar">A</div>
+                <div class="admin-details">
+                    <strong id="adminName">Admin</strong>
+                    <small id="adminEmail">admin@roran28.com</small>
+                </div>
+            </div>
+            <button class="btn-logout" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                Déconnexion
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Section Dashboard -->
+        <section id="dashboard" class="section active">
+            <div class="section-header">
+                <h1>Dashboard</h1>
+                <div class="header-actions">
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-download"></i>
+                        Exporter
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-label">Total Animes</div>
+                        <div class="stat-value" id="totalAnimes">0</div>
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i> +12%
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon green">
+                        <i class="fas fa-play-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-label">Total Épisodes</div>
+                        <div class="stat-value" id="totalEpisodes">0</div>
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i> +8%
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon orange">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-label">Utilisateurs</div>
+                        <div class="stat-value" id="totalUsers">0</div>
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i> +25%
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon purple">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-label">Vues Totales</div>
+                        <div class="stat-value">12.5K</div>
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i> +18%
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="dashboard-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Activité Récente</h3>
+                        <button class="btn-icon">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                    </div>
+                    <div class="activity-list" id="activityList">
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-plus-circle"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Nouvel anime ajouté</div>
+                                <div class="activity-time">Il y a 5 minutes</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Nouvel utilisateur inscrit</div>
+                                <div class="activity-time">Il y a 1 heure</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-edit"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Anime mis à jour</div>
+                                <div class="activity-time">Il y a 3 heures</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Animes Populaires</h3>
+                    </div>
+                    <div class="popular-list" id="popularList">
+                        <div class="popular-item">
+                            <div class="popular-rank">1</div>
+                            <div class="popular-info">
+                                <div class="popular-title">Demon Slayer</div>
+                                <div class="popular-views">12.3K vues</div>
+                            </div>
+                            <div class="popular-trend">+15%</div>
+                        </div>
+                        <div class="popular-item">
+                            <div class="popular-rank">2</div>
+                            <div class="popular-info">
+                                <div class="popular-title">Attack on Titan</div>
+                                <div class="popular-views">10.8K vues</div>
+                            </div>
+                            <div class="popular-trend">+8%</div>
+                        </div>
+                        <div class="popular-item">
+                            <div class="popular-rank">3</div>
+                            <div class="popular-info">
+                                <div class="popular-title">Jujutsu Kaisen</div>
+                                <div class="popular-views">9.2K vues</div>
+                            </div>
+                            <div class="popular-trend">+22%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Animes -->
+        <section id="animes" class="section">
+            <div class="section-header">
+                <h1>Gestion des Animes</h1>
+                <button class="btn btn-primary" onclick="openAddModal()">
+                    <i class="fas fa-plus"></i>
+                    Ajouter un Anime
+                </button>
+            </div>
+
+            <div class="table-container">
+                <table class="animes-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 80px;">Image</th>
+                            <th>Titre</th>
+                            <th>Genre</th>
+                            <th style="width: 80px;">Note</th>
+                            <th style="width: 100px;">Épisodes</th>
+                            <th style="width: 150px;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="animesTableBody">
+                        <tr>
+                            <td colspan="6" class="text-center">Chargement...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Section Utilisateurs -->
+        <section id="users" class="section">
+            <div class="section-header">
+                <h1>Utilisateurs</h1>
+                <button class="btn btn-secondary">
+                    <i class="fas fa-filter"></i>
+                    Filtrer
+                </button>
+            </div>
+
+            <div class="table-container">
+                <table class="users-table">
+                    <thead>
+                        <tr>
+                            <th>Utilisateur</th>
+                            <th>Email</th>
+                            <th>Inscrit le</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <tr>
+                            <td colspan="5" class="text-center">Chargement...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Section Statistiques -->
+        <section id="stats" class="section">
+            <div class="section-header">
+                <h1>Statistiques Détaillées</h1>
+                <div class="header-actions">
+                    <select class="filter-select">
+                        <option>7 derniers jours</option>
+                        <option>30 derniers jours</option>
+                        <option>12 derniers mois</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="stats-detailed-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Vues par Jour</h3>
+                    </div>
+                    <div class="chart-placeholder">
+                        <i class="fas fa-chart-line"></i>
+                        <p>Graphique des vues quotidiennes</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Genres Populaires</h3>
+                    </div>
+                    <div class="genre-stats">
+                        <div class="genre-item">
+                            <div class="genre-name">Action</div>
+                            <div class="genre-bar">
+                                <div class="genre-fill" style="width: 85%"></div>
+                            </div>
+                            <div class="genre-percent">85%</div>
+                        </div>
+                        <div class="genre-item">
+                            <div class="genre-name">Romance</div>
+                            <div class="genre-bar">
+                                <div class="genre-fill" style="width: 72%"></div>
+                            </div>
+                            <div class="genre-percent">72%</div>
+                        </div>
+                        <div class="genre-item">
+                            <div class="genre-name">Comédie</div>
+                            <div class="genre-bar">
+                                <div class="genre-fill" style="width: 65%"></div>
+                            </div>
+                            <div class="genre-percent">65%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal Add Anime -->
+    <div class="modal" id="addAnimeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Ajouter un Anime</h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+
+            <form id="addAnimeForm" class="form">
+                <div class="form-group">
+                    <label>Titre *</label>
+                    <input type="text" name="title" required placeholder="Ex: One Piece">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Genre</label>
+                        <input type="text" name="genre" placeholder="Action, Adventure">
+                    </div>
+                    <div class="form-group">
+                        <label>Note (sur 10)</label>
+                        <input type="number" name="rating" min="0" max="10" step="0.1" placeholder="8.5">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea name="description" rows="4" placeholder="Synopsis..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Image de Couverture *</label>
+                    <div class="file-upload-box" onclick="document.getElementById('animeImage').click()">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Cliquez pour choisir une image</p>
+                        <small>JPG, PNG, GIF (max 5MB)</small>
+                    </div>
+                    <input type="file" id="animeImage" accept="image/*" style="display: none;">
+                    <div id="imagePreview" class="image-preview-container"></div>
+                </div>
+
+                <div class="form-group">
+                    <label>Nombre d'épisodes</label>
+                    <input type="number" name="episodes" min="1" placeholder="12">
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">
+                        Annuler
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Enregistrer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="js/auth.js"></script>
+    <script src="js/admin-dashboard.js"></script>
+</body>
+</html>

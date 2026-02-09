@@ -266,8 +266,16 @@ function createAnimeCard(anime) {
 function initCarousel() {
     const animes = JSON.parse(localStorage.getItem(STORAGE_KEYS.ANIMES) || '[]');
     
-    // Prendre les 5 premiers animes pour le carousel
-    carouselAnimes = animes.slice(0, 5);
+    // Prioriser les animes trending pour le carousel hero
+    let trendingAnimes = animes.filter(anime => anime.isTrending);
+    
+    if (trendingAnimes.length >= 5) {
+        carouselAnimes = trendingAnimes.slice(0, 5);
+    } else {
+        // Compléter avec d'autres animes si pas assez de trending
+        const remaining = animes.filter(anime => !anime.isTrending);
+        carouselAnimes = [...trendingAnimes, ...remaining].slice(0, 5);
+    }
     
     const slidesContainer = document.getElementById('carousel-slides');
     const indicatorsContainer = document.getElementById('carousel-indicators');
@@ -376,10 +384,18 @@ function initTrendingCarousel() {
     
     if (!carousel) return;
     
-    // Trier par note et prendre les meilleurs
-    const trending = [...animes]
-        .sort((a, b) => (b.rating || 4.5) - (a.rating || 4.5))
-        .slice(0, 8);
+    // Filtrer d'abord les animes marqués comme trending
+    let trending = animes.filter(anime => anime.isTrending);
+    
+    // Si aucun anime n'est marqué comme trending, prendre les mieux notés
+    if (trending.length === 0) {
+        trending = [...animes]
+            .sort((a, b) => (b.rating || 4.5) - (a.rating || 4.5))
+            .slice(0, 8);
+    } else {
+        // Limiter à 8 animes trending
+        trending = trending.slice(0, 8);
+    }
     
     carousel.innerHTML = trending.map(anime => createAnimeCard(anime)).join('');
 }

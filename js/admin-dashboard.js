@@ -157,13 +157,13 @@ function drawChart() {
     const chartContainer = document.querySelector('.chart-placeholder');
     if (!chartContainer) return;
     
-    // Données simulées pour le graphique
     const data = [120, 190, 300, 250, 340, 420, 380];
     const days = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
     const maxValue = Math.max(...data);
     
     chartContainer.innerHTML = `
         <div style="padding: 24px;">
+            <h4 style="margin-bottom: 20px; font-size: 16px; color: var(--text-muted);">Vues par jour (7 derniers jours)</h4>
             <div style="display: flex; align-items: flex-end; gap: 12px; height: 200px;">
                 ${data.map((value, index) => {
                     const height = (value / maxValue) * 100;
@@ -210,7 +210,10 @@ function loadAnimes() {
                      style="width: 60px; height: 80px; object-fit: cover; border-radius: 4px;"
                      onerror="this.src='https://images.unsplash.com/photo-1578632767115-351597cf2477?w=400&h=600&fit=crop'">
             </td>
-            <td><strong>${anime.title}</strong></td>
+            <td>
+                <strong>${anime.title}</strong>
+                ${anime.isTrending ? '<span style="display: block; margin-top: 4px; color: var(--primary); font-size: 12px;"><i class="fas fa-fire"></i> TRENDING</span>' : ''}
+            </td>
             <td>${anime.genre || '-'}</td>
             <td>
                 <span style="color: #fbbf24; font-weight: 700;">
@@ -220,6 +223,11 @@ function loadAnimes() {
             <td>${anime.episodes || 0}</td>
             <td>
                 <div style="display: flex; gap: 8px;">
+                    <button class="btn btn-sm ${anime.isTrending ? 'btn-danger' : 'btn-secondary'}" 
+                            onclick="toggleTrending('${anime.id}')" 
+                            title="${anime.isTrending ? 'Retirer des tendances' : 'Marquer comme tendance'}">
+                        <i class="fas fa-fire"></i>
+                    </button>
                     <button class="btn btn-primary btn-sm" onclick="editAnime('${anime.id}')" title="Modifier">
                         <i class="fas fa-edit"></i>
                     </button>
@@ -230,6 +238,18 @@ function loadAnimes() {
             </td>
         </tr>
     `).join('');
+}
+
+function toggleTrending(animeId) {
+    const animes = JSON.parse(localStorage.getItem('roran28_animes') || '[]');
+    const anime = animes.find(a => a.id === animeId);
+    
+    if (anime) {
+        anime.isTrending = !anime.isTrending;
+        localStorage.setItem('roran28_animes', JSON.stringify(animes));
+        loadAnimes();
+        showToast(anime.isTrending ? '⭐ Marqué comme tendance' : 'Retiré des tendances', 'success');
+    }
 }
 
 function deleteAnime(animeId) {
@@ -257,11 +277,18 @@ function editAnime(animeId) {
     editingAnimeId = animeId;
     
     // Remplir le formulaire
-    document.getElementById('addAnimeForm').querySelector('[name="title"]').value = anime.title;
-    document.getElementById('addAnimeForm').querySelector('[name="genre"]').value = anime.genre || '';
-    document.getElementById('addAnimeForm').querySelector('[name="rating"]').value = anime.rating || '';
-    document.getElementById('addAnimeForm').querySelector('[name="description"]').value = anime.description || '';
-    document.getElementById('addAnimeForm').querySelector('[name="episodes"]').value = anime.episodes || '';
+    const form = document.getElementById('addAnimeForm');
+    form.querySelector('[name="title"]').value = anime.title;
+    form.querySelector('[name="genre"]').value = anime.genre || '';
+    form.querySelector('[name="rating"]').value = anime.rating || '';
+    form.querySelector('[name="description"]').value = anime.description || '';
+    form.querySelector('[name="episodes"]').value = anime.episodes || '';
+    
+    // Checkbox trending
+    const trendingCheckbox = document.getElementById('isTrending');
+    if (trendingCheckbox) {
+        trendingCheckbox.checked = anime.isTrending || false;
+    }
     
     // Afficher l'image actuelle
     selectedImageBase64 = anime.image;
@@ -269,7 +296,7 @@ function editAnime(animeId) {
     
     // Changer le titre du modal
     document.querySelector('.modal-header h2').textContent = 'Modifier l\'Anime';
-    document.querySelector('.form-actions .btn-primary span').textContent = 'Mettre à jour';
+    document.getElementById('submitBtnText').textContent = 'Mettre à jour';
     
     openAddModal();
 }
@@ -350,10 +377,7 @@ function closeModal() {
     
     // Réinitialiser le titre
     document.querySelector('.modal-header h2').textContent = 'Ajouter un Anime';
-    const submitBtn = document.querySelector('.form-actions .btn-primary');
-    if (submitBtn.querySelector('span')) {
-        submitBtn.querySelector('span').textContent = 'Enregistrer';
-    }
+    document.getElementById('submitBtnText').textContent = 'Enregistrer';
 }
 
 // ============================================
@@ -378,7 +402,8 @@ if (form) {
             description: formData.get('description') || '',
             image: selectedImageBase64,
             status: 'En cours',
-            episodes: parseInt(formData.get('episodes')) || 12
+            episodes: parseInt(formData.get('episodes')) || 12,
+            isTrending: document.getElementById('isTrending').checked
         };
         
         const animes = JSON.parse(localStorage.getItem('roran28_animes') || '[]');

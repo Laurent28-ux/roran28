@@ -357,9 +357,20 @@
                     <div id="imagePreview" class="image-preview-container"></div>
                 </div>
 
-                <div class="form-group">
-                    <label>Nombre d'épisodes</label>
-                    <input type="number" name="episodes" min="1" placeholder="12">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nombre d'épisodes</label>
+                        <input type="number" name="episodes" min="1" placeholder="12">
+                    </div>
+                    <div class="form-group">
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none;">
+                            <input type="checkbox" name="isTrending" id="isTrending" style="width: 20px; height: 20px; cursor: pointer;">
+                            <span>⭐ Anime Tendance</span>
+                        </label>
+                        <small style="color: var(--text-muted); display: block; margin-top: 8px;">
+                            Cet anime sera affiché en priorité dans les sections "Trending"
+                        </small>
+                    </div>
                 </div>
 
                 <div class="form-actions">
@@ -368,7 +379,7 @@
                     </button>
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-save"></i>
-                        Enregistrer
+                        <span id="submitBtnText">Enregistrer</span>
                     </button>
                 </div>
             </form>

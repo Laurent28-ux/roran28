@@ -7,6 +7,101 @@ let allAnimes = [];
 let heroInterval = null;
 
 // =========================================
+// NAVIGATION ENTRE SECTIONS
+// =========================================
+function switchSection(sectionName) {
+    // Masquer toutes les sections
+    document.querySelectorAll('.content-section').forEach(section => {
+        section.classList.remove('active');
+    });
+    
+    // Désactiver tous les liens nav
+    document.querySelectorAll('.nav-item').forEach(link => {
+        link.classList.remove('active');
+    });
+    
+    // Afficher la section ciblée
+    const targetSection = document.getElementById('section-' + sectionName);
+    if (targetSection) {
+        targetSection.classList.add('active');
+    }
+    
+    // Activer le lien correspondant
+    const targetLink = document.querySelector(`[data-section="${sectionName}"]`);
+    if (targetLink) {
+        targetLink.classList.add('active');
+    }
+    
+    // Charger le contenu selon la section
+    loadSectionContent(sectionName);
+}
+
+function loadSectionContent(sectionName) {
+    switch(sectionName) {
+        case 'home':
+            // Déjà chargé à l'initialisation
+            break;
+        case 'series':
+            loadAllSeries();
+            break;
+        case 'movies':
+            loadAllMovies();
+            break;
+        case 'new':
+            loadNewAndPopular();
+            break;
+        case 'mylist':
+            loadMyList();
+            break;
+    }
+}
+
+function loadAllSeries() {
+    const container = document.getElementById('allSeries');
+    if (!container) return;
+    
+    const series = allAnimes.filter(anime => anime.type !== 'Film');
+    
+    if (series.length === 0) {
+        container.innerHTML = '<div class="empty-message"><i class="fas fa-tv"></i><p>Aucune série disponible</p></div>';
+        return;
+    }
+    
+    container.innerHTML = series.map(anime => createAnimeCard(anime)).join('');
+}
+
+function loadAllMovies() {
+    const container = document.getElementById('allMovies');
+    if (!container) return;
+    
+    const movies = allAnimes.filter(anime => anime.type === 'Film');
+    
+    if (movies.length === 0) {
+        container.innerHTML = '<div class="empty-message"><i class="fas fa-film"></i><p>Aucun film disponible</p></div>';
+        return;
+    }
+    
+    container.innerHTML = movies.map(anime => createAnimeCard(anime)).join('');
+}
+
+function loadNewAndPopular() {
+    const container = document.getElementById('newAndPopular');
+    if (!container) return;
+    
+    // Combiner les nouveautés et les populaires
+    const newAnimes = [...allAnimes]
+        .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
+        .slice(0, 20);
+    
+    if (newAnimes.length === 0) {
+        container.innerHTML = '<div class="empty-message"><i class="fas fa-star"></i><p>Aucun anime disponible</p></div>';
+        return;
+    }
+    
+    container.innerHTML = newAnimes.map(anime => createAnimeCard(anime)).join('');
+}
+
+// =========================================
 // INITIALISATION
 // =========================================
 document.addEventListener('DOMContentLoaded', function() {
@@ -130,8 +225,18 @@ function loadSection(containerId, animes) {
         return;
     }
     
-    // Limiter à 10 animes par section
-    const displayAnimes = animes.slice(0, 10);
+    let displayAnimes = animes;
+    
+    // Filtrer les trending pour la section "Trending Now"
+    if (containerId === 'trendingNow') {
+        displayAnimes = animes.filter(a => a.isTrending);
+        if (displayAnimes.length === 0) {
+            displayAnimes = animes.slice(0, 10); // Si aucun trending, afficher les 10 premiers
+        }
+    } else {
+        displayAnimes = animes.slice(0, 10);
+    }
+    
     container.innerHTML = displayAnimes.map(anime => createAnimeCard(anime)).join('');
 }
 
@@ -198,14 +303,20 @@ function loadContinueWatching() {
 
 function loadMyList() {
     const myListData = JSON.parse(localStorage.getItem('my_list_' + currentUser.email) || '[]');
+    const container = document.getElementById('myList');
+    
+    if (!container) return;
     
     if (myListData.length === 0) {
-        document.getElementById('myListSection').style.display = 'none';
+        container.innerHTML = `
+            <div class="empty-message">
+                <i class="fas fa-heart"></i>
+                <p>Votre liste est vide</p>
+                <p style="font-size: 14px; margin-top: 8px;">Cliquez sur le bouton + pour ajouter des animes</p>
+            </div>
+        `;
         return;
     }
-    
-    document.getElementById('myListSection').style.display = 'block';
-    const container = document.getElementById('myList');
     
     const animes = myListData.map(id => allAnimes.find(a => a.id === id)).filter(Boolean);
     container.innerHTML = animes.map(anime => createAnimeCard(anime)).join('');
@@ -306,7 +417,7 @@ function displaySearchResults(results) {
     const container = document.getElementById('searchResults');
     
     if (results.length === 0) {
-        container.innerHTML = '<div style="padding: 20px; color: #666; text-align: center;">Aucun résultat</div>';
+        container.innerHTML = '<div style="padding: 20px; color: #666; text-align: center;">Aucun résultat trouvé</div>';
         return;
     }
     
